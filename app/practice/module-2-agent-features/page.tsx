@@ -40,6 +40,12 @@ export default function Module2Practice() {
            * ========================================== */}
           <section className="bg-white p-6 rounded-lg shadow border-2 border-red-500">
             <h2 className="text-2xl font-semibold mb-4">🔧 Lesson 2.1: Fix Broken Code</h2>
+            <p className="text-gray-600 mb-4">
+              Originally, the calculator used the input values as strings, so adding values such as
+              2 and 3 could produce 23 instead of 5. It also accepted invalid input and allowed
+              division by zero, which could produce an invalid result. The fix converts both inputs
+              to numbers, validates them, and rejects a zero divisor.
+            </p>
             <BrokenCalculator />
           </section>
 
@@ -157,15 +163,35 @@ function BrokenCalculator() {
   const [num2, setNum2] = useState('')
   const [result, setResult] = useState(0)
 
-  // Bug: This function has issues with type conversion and error handling
-  const calculate = () => {
-    const sum = num1 + num2 // Bug: String concatenation instead of addition
-    setResult(sum)
+  // Originally, the inputs were treated as strings, so addition could concatenate
+  // them instead of adding numbers. Invalid input also needed to be rejected
+  // before updating the result. The fixed version converts and validates both values.
+  const calculate = async () => {
+    const [firstNumber, secondNumber] = await Promise.all([
+      Promise.resolve(Number(num1)),
+      Promise.resolve(Number(num2)),
+    ])
+
+    if (!Number.isFinite(firstNumber) || !Number.isFinite(secondNumber)) {
+      return
+    }
+
+    setResult(firstNumber + secondNumber)
   }
 
-  // Bug: Missing divide by zero check
-  const divide = () => {
-    setResult(num1 / num2)
+  // Originally, division did not guard against a zero divisor, which could produce
+  // an invalid result. The fixed version validates both numbers and rejects zero.
+  const divide = async () => {
+    const [firstNumber, secondNumber] = await Promise.all([
+      Promise.resolve(Number(num1)),
+      Promise.resolve(Number(num2)),
+    ])
+
+    if (!Number.isFinite(firstNumber) || !Number.isFinite(secondNumber) || secondNumber === 0) {
+      return
+    }
+
+    setResult(firstNumber / secondNumber)
   }
 
   return (

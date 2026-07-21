@@ -73,9 +73,11 @@ export default function Module1Practice() {
             <p className="text-gray-600 mb-4">
               Create a simple component below and experiment with Copilot suggestions
             </p>
-            {/* UNCOMMENT AND PRACTICE HERE:
+            {/* Uncomment the line below to start practicing */}
+            {/*
             
             <YourPracticeComponent />
+            
             
             */}
           </section>
